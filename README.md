@@ -1,0 +1,2 @@
+# TechBytes
+Ignoring local minima
