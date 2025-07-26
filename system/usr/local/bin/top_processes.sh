@@ -15,7 +15,7 @@ fi
 # Loop through each process and format as InfluxDB Line Protocol
 while IFS= read -r line; do
 
-  user=$(echo "$line" | awk '{print $1}')
+  user=$(echo "$line" | awk '{print $1}' |  sed 's/.*/"&"/')
   pid=$(echo "$line" | awk '{print $2}')
   cpu_usage=$(echo "$line" | awk '{print $3}')
   mem_usage=$(echo "$line" | awk '{print $4}')
