@@ -2,7 +2,7 @@
 # Script to fetch top 10 processes by MEM usage and output in InfluxDB Line Protocol
 
 # Get top 10 processes by MEM usage, skipping header
-processes=$(ps -eo user,pid,%cpu,%mem,start --sort=-%mem | tail -n +2 )
+processes=$(ps -eo user,pid,%cpu,%mem --sort=-%mem | tail -n +2 )
 
 filtered_processes=$(echo "$processes" | awk '$4 > 0.1')
 
@@ -19,7 +19,6 @@ while IFS= read -r line; do
   pid=$(echo "$line" | awk '{print $2}')
   cpu_usage=$(echo "$line" | awk '{print $3}')
   mem_usage=$(echo "$line" | awk '{print $4}')
-  start_time=$(echo "$line" | awk '{print $5}')
   # Get full command from /proc/<pid>/cmdline
   if [ -r "/proc/$pid/cmdline" ]; then
     command=$(tr '\0' ' ' < "/proc/$pid/cmdline" |  sed 's/"/\\"/g' | sed 's/[[:space:]]*$//' | sed 's/.*/"&"/')
@@ -28,10 +27,10 @@ while IFS= read -r line; do
   fi
 
   # Skip invalid or empty lines
-  if [ -z "$user" ] || [ -z "$pid" ] || [ -z "$command" ] || [ -z "$cpu_usage" ] || [ -z "$mem_usage" ] || [ -z "$start_time" ] ; then
+  if [ -z "$user" ] || [ -z "$pid" ] || [ -z "$command" ] || [ -z "$cpu_usage" ] || [ -z "$mem_usage" ]  ; then
     continue
   fi
 
   # Output in InfluxDB Line Protocol
-  echo "top_processes,user=$user,pid=$pid,command=$command,cpu_usage=$cpu_usage,mem_usage=$mem_usage,start_time=$start_time"
+  echo "top_processes,user=$user,pid=$pid,command=$command,cpu_usage=$cpu_usage,mem_usage=$mem_usage"
 done <<< "$filtered_processes"
