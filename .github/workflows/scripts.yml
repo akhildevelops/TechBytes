@@ -21,3 +21,11 @@ jobs:
           key: ${{ secrets.OVH_SERVER_KEY }}
           source: system/*
           target: /tmp
+      - name: Move files to /usr/local/bin with sudo
+        uses: appleboy/ssh-action@v1
+        with:
+         host: ${{ secrets.OVH_HOST }}
+         username: ${{ secrets.OVH_USERNAME }}
+         key: ${{ secrets.OVH_SERVER_KEY }}
+         script: |
+           sudo cp -r /tmp/system/* /
