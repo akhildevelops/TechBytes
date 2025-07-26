@@ -19,5 +19,5 @@ jobs:
           host: ${{ secrets.OVH_HOST }}
           username: ${{ secrets.OVH_USERNAME }}
           key: ${{ secrets.OVH_SERVER_KEY }}
-          source: system/
-          target: /
+          source: system/*
+          target: /tmp
