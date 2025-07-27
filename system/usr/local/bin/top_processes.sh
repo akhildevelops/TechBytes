@@ -31,5 +31,5 @@ while IFS= read -r line; do
   fi
 
   # Output in InfluxDB Line Protocol
-  echo "top_processes,user=$user,pid=${pid}u command=${command},cpu_usage=$cpu_usage,mem_usage=$mem_usage "
+  echo "top_processes,user=$user pid=${pid}u,command=${command},cpu_usage=$cpu_usage,mem_usage=$mem_usage "
 done <<< "$filtered_processes"
